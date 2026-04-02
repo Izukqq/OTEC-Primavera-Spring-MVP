@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Cursos - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1rem;">Listado de Cursos</h2>
+
+    <div th:if="${msgExito}" class="alert alert-success" th:text="${msgExito}"></div>
+    <div th:if="${msgError}" class="alert alert-danger" th:text="${msgError}"></div>
+
+    <div sec:authorize="hasRole('ADMIN')" style="margin-bottom: 1rem;">
+        <a th:href="@{/cursos/nuevo}" class="btn btn-primary">+ Nuevo Curso</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Fecha Inicio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="curso : ${cursos}">
+                <td th:text="${curso.id}"></td>
+                <td th:text="${curso.nombre}"></td>
+                <td th:text="${curso.descripcion}"></td>
+                <td th:text="${curso.fechaInicio}"></td>
+                <td sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/cursos/eliminar/{id}(id=${curso.id})}"
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar este curso?');">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(cursos)}">
+                <td colspan="5" style="text-align: center; padding: 2rem;">No hay cursos registrados.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

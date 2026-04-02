@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Registrar Nota - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1rem;">Registrar Nota</h2>
+
+    <div th:if="${msgExito}" class="alert alert-success" th:text="${msgExito}"></div>
+    <div th:if="${msgError}" class="alert alert-danger" th:text="${msgError}"></div>
+
+    <div class="form-card">
+        <form th:action="@{/evaluaciones/notas/guardar}" th:object="${nota}" method="post">
+
+            <label for="estudianteId">Estudiante</label>
+            <select id="estudianteId" name="estudianteId" required>
+                <option value="">-- Seleccione un estudiante --</option>
+                <option th:each="est : ${estudiantes}"
+                        th:value="${est.id}"
+                        th:text="${est.nombre + ' (' + est.email + ')'}">
+                </option>
+            </select>
+
+            <label for="evaluacionId">Evaluación</label>
+            <select id="evaluacionId" name="evaluacionId" required>
+                <option value="">-- Seleccione una evaluación --</option>
+                <option th:each="ev : ${evaluaciones}"
+                        th:value="${ev.id}"
+                        th:text="${ev.nombre + ' - ' + ev.curso.nombre}">
+                </option>
+            </select>
+
+            <label for="calificacion">Calificación (1.0 - 7.0)</label>
+            <input type="number" id="calificacion" th:field="*{calificacion}" step="0.1" min="1.0" max="7.0" placeholder="Ej: 5.5" required>
+            <p class="error-field" th:if="${#fields.hasErrors('calificacion')}" th:errors="*{calificacion}"></p>
+
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" th:field="*{fecha}" required>
+            <p class="error-field" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></p>
+
+            <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-success">Guardar Nota</button>
+                <a th:href="@{/evaluaciones}" class="btn btn-primary" style="margin-left: 0.5rem;">Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

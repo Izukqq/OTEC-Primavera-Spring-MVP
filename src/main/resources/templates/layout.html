@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">OTEC Primavera</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; color: #333; }
+        .navbar { background: #2c3e50; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #ecf0f1; text-decoration: none; margin-right: 1.5rem; font-weight: 500; }
+        .navbar a:hover { color: #1abc9c; }
+        .navbar .brand { font-size: 1.4rem; font-weight: 700; color: #1abc9c; }
+        .container { max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+        .alert { padding: 0.8rem 1.2rem; border-radius: 6px; margin-bottom: 1rem; font-weight: 500; }
+        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        th { background: #2c3e50; color: #fff; padding: 0.75rem 1rem; text-align: left; }
+        td { padding: 0.75rem 1rem; border-bottom: 1px solid #eee; }
+        tr:hover { background: #f8f9fa; }
+        .btn { display: inline-block; padding: 0.5rem 1.2rem; border-radius: 5px; text-decoration: none; font-weight: 500; border: none; cursor: pointer; font-size: 0.9rem; }
+        .btn-primary { background: #2c3e50; color: #fff; }
+        .btn-primary:hover { background: #1abc9c; }
+        .btn-danger { background: #e74c3c; color: #fff; }
+        .btn-danger:hover { background: #c0392b; }
+        .btn-success { background: #27ae60; color: #fff; }
+        .btn-success:hover { background: #219a52; }
+        form label { display: block; margin-bottom: 0.3rem; font-weight: 600; margin-top: 1rem; }
+        form input, form select { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; }
+        form input:focus, form select:focus { outline: none; border-color: #1abc9c; }
+        .form-card { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .error-field { color: #e74c3c; font-size: 0.85rem; margin-top: 0.2rem; }
+        footer { text-align: center; padding: 2rem; color: #7f8c8d; font-size: 0.85rem; margin-top: 3rem; }
+    </style>
+</head>
+<body>
+
+<nav th:fragment="navbar" class="navbar">
+    <span class="brand">OTEC Primavera</span>
+    <div>
+        <a th:href="@{/cursos}">Cursos</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/estudiantes}">Estudiantes</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/evaluaciones}">Evaluaciones</a>
+        <a sec:authorize="hasRole('USER')" th:href="@{/mi-progreso}">Mi Progreso</a>
+        <span sec:authorize="isAuthenticated()" style="color: #95a5a6; margin-right: 1rem;"
+              th:text="'| ' + ${#authentication.name}"></span>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post"
+              style="display: inline; margin: 0;">
+            <button type="submit"
+                    style="background: none; border: none; color: #e74c3c; cursor: pointer; font-weight: 500; font-size: 1rem; font-family: inherit; padding: 0;">
+                Cerrar Sesión
+            </button>
+        </form>
+    </div>
+</nav>
+
+<footer th:fragment="footer">
+    <p>&copy; 2026 OTEC Primavera &mdash; Gestión Académica</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Mi Progreso - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1.5rem;">Mi Progreso Académico</h2>
+
+    <div th:if="${mensaje}" class="alert alert-danger" th:text="${mensaje}"></div>
+
+    <div th:if="${estudiante}" class="form-card">
+        <table>
+            <tr>
+                <th style="width: 30%;">Campo</th>
+                <th>Detalle</th>
+            </tr>
+            <tr>
+                <td><strong>Nombre</strong></td>
+                <td th:text="${estudiante.nombre}"></td>
+            </tr>
+            <tr>
+                <td><strong>Email</strong></td>
+                <td th:text="${estudiante.email}"></td>
+            </tr>
+            <tr>
+                <td><strong>Curso</strong></td>
+                <td th:text="${estudiante.curso != null ? estudiante.curso.nombre : 'Sin asignar'}"></td>
+            </tr>
+            <tr>
+                <td><strong>Progreso</strong></td>
+                <td>
+                    <div style="background: #ecf0f1; border-radius: 10px; overflow: hidden; height: 24px; position: relative;">
+                        <div th:style="'width:' + ${estudiante.progreso} + '%; background: #27ae60; height: 100%; border-radius: 10px; transition: width 0.3s;'"></div>
+                        <span th:text="${estudiante.progreso} + '%'"
+                              style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 700; font-size: 0.85rem;">
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:if="${notas != null and !notas.isEmpty()}" style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem;">Mis Notas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Evaluación</th>
+                    <th>Calificación</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="nota : ${notas}">
+                    <td th:text="${nota.evaluacion.nombre}"></td>
+                    <td th:text="${nota.calificacion}"></td>
+                    <td th:text="${nota.fecha}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${notas == null or notas.isEmpty()}" style="margin-top: 2rem;">
+        <p style="color: #7f8c8d;">Aún no tienes notas registradas.</p>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

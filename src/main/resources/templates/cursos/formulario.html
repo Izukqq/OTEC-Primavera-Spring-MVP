@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Nuevo Curso - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1rem;">Registrar Nuevo Curso</h2>
+
+    <div class="form-card">
+        <form th:action="@{/cursos/guardar}" th:object="${curso}" method="post">
+
+            <input type="hidden" th:field="*{id}">
+
+            <div th:if="${msgError}" class="alert alert-danger" th:text="${msgError}"></div>
+
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre del curso" required>
+            <p class="error-field" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+
+            <label for="descripcion">Descripción</label>
+            <input type="text" id="descripcion" th:field="*{descripcion}" placeholder="Descripción del curso" required>
+            <p class="error-field" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></p>
+
+            <label for="fechaInicio">Fecha de Inicio</label>
+            <input type="date" id="fechaInicio" th:field="*{fechaInicio}" required>
+            <p class="error-field" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></p>
+
+            <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-success">Guardar Curso</button>
+                <a th:href="@{/cursos}" class="btn btn-primary" style="margin-left: 0.5rem;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

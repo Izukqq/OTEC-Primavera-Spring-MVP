@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Evaluaciones - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1rem;">Listado de Evaluaciones</h2>
+
+    <div th:if="${msgExito}" class="alert alert-success" th:text="${msgExito}"></div>
+    <div th:if="${msgError}" class="alert alert-danger" th:text="${msgError}"></div>
+
+    <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+        <a th:href="@{/evaluaciones/nueva}" class="btn btn-primary">+ Nueva Evaluación</a>
+        <a th:href="@{/evaluaciones/notas/nueva}" class="btn btn-success">+ Registrar Nota</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Curso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="ev : ${evaluaciones}">
+                <td th:text="${ev.id}"></td>
+                <td th:text="${ev.nombre}"></td>
+                <td th:text="${ev.descripcion}"></td>
+                <td th:text="${ev.curso.nombre}"></td>
+                <td>
+                    <a th:href="@{/evaluaciones/eliminar/{id}(id=${ev.id})}"
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar esta evaluación?');">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(evaluaciones)}">
+                <td colspan="5" style="text-align: center; padding: 2rem;">No hay evaluaciones registradas.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

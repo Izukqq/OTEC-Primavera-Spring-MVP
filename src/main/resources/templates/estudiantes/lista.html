@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Estudiantes - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1rem;">Listado de Estudiantes</h2>
+
+    <div th:if="${msgExito}" class="alert alert-success" th:text="${msgExito}"></div>
+    <div th:if="${msgError}" class="alert alert-danger" th:text="${msgError}"></div>
+
+    <div sec:authorize="hasRole('ADMIN')" style="margin-bottom: 1rem;">
+        <a th:href="@{/estudiantes/nuevo}" class="btn btn-primary">+ Nuevo Estudiante</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Progreso</th>
+                <th>Curso</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="est : ${estudiantes}">
+                <td th:text="${est.id}"></td>
+                <td th:text="${est.nombre}"></td>
+                <td th:text="${est.email}"></td>
+                <td th:text="${est.progreso} + '%'"></td>
+                <td th:text="${est.curso != null ? est.curso.nombre : 'Sin asignar'}"></td>
+                <td sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/estudiantes/eliminar/{id}(id=${est.id})}"
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar este estudiante?');">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(estudiantes)}">
+                <td colspan="6" style="text-align: center; padding: 2rem;">No hay estudiantes registrados.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección de Matriculación -->
+    <div sec:authorize="hasRole('ADMIN')" th:if="${not #lists.isEmpty(estudiantes)}" style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem;">Matricular Estudiante en Curso</h3>
+        <div class="form-card">
+            <form th:action="@{/estudiantes/matricular}" method="post" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="estudianteId">Estudiante</label>
+                    <select id="estudianteId" name="estudianteId" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option th:each="est : ${estudiantes}" th:value="${est.id}" th:text="${est.nombre}"></option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="cursoId">Curso</label>
+                    <select id="cursoId" name="cursoId" required>
+                        <option value="">-- Seleccionar --</option>
+                        <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.nombre}"></option>
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success">Matricular</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

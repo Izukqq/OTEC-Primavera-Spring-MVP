@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Nuevo Estudiante - OTEC Primavera')}"></head>
+<body>
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<div class="container">
+    <h2 style="margin-bottom: 1rem;">Registrar Nuevo Estudiante</h2>
+
+    <div class="form-card">
+        <form th:action="@{/estudiantes/guardar}" th:object="${estudiante}" method="post">
+
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre completo" required>
+            <p class="error-field" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="correo@ejemplo.com" required>
+            <p class="error-field" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+            <label for="progreso">Progreso (%)</label>
+            <input type="number" id="progreso" th:field="*{progreso}" min="0" max="100" placeholder="0" required>
+            <p class="error-field" th:if="${#fields.hasErrors('progreso')}" th:errors="*{progreso}"></p>
+
+            <label for="curso">Curso (opcional)</label>
+            <select id="curso" th:field="*{curso.id}">
+                <option value="">-- Sin asignar --</option>
+                <option th:each="c : ${cursos}" th:value="${c.id}" th:text="${c.nombre}"></option>
+            </select>
+
+            <div style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-success">Guardar Estudiante</button>
+                <a th:href="@{/estudiantes}" class="btn btn-primary" style="margin-left: 0.5rem;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
