@@ -1,0 +1,27 @@
+
+# Build output
+target/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+.factorypath
+
+# OS
+Thumbs.db
+.DS_Store
+
+# GitHub Copilot / internal
+.github/
+
+# Maven wrapper (if not used)
+.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
